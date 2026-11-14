@@ -1,0 +1,75 @@
+---
+title: "useEffect, Explained: A Quick Beginner's Guide"
+date: "2026-08-10"
+featuredImage:
+  src: "./images/useeffect-banner.jpg"
+  alt: "Ultrasonic sensor module on a dark reflective surface with blurred blue lights in the background"
+featured: true
+---
+
+One of the most useful React hooks is the **useEffect** hook. It allows you to keep your component in sync with external sources. These sources can be anything from data from an API you're fetching or even an animation being triggered. I've used this in various projects over time but was originally confused about how it worked and what each part meant. If you can relate, here's just a quick and easy guide to get you started with [useEffect](https://react.dev/reference/react/hooks).
+
+### When To Use It
+
+When you want your component in-sync with something outside of itself. Some examples:
+
+#### Fetching data from an API
+
+This is probably one of the more common uses: you want to run some asynchronous process and want to then use the result from that process in your component somehow.
+
+```js
+function ProductGrid() {
+  useEffect(() => {
+    getData()
+  }, []) // the '[]' makes this run once on-mount (when component first renders)
+
+  return <div></div>
+}
+```
+
+#### Depending on Other Events
+
+In this example the value of "progress" is controlled by another component but you want your ProgressTracker component to update and trigger an action based on that value.
+
+```js
+/** 
+Assume 'progress' comes in as a prop
+and 'setShowConfetti' from 'useState' in the parent.
+**/
+
+function ProgressTracker() {
+  useEffect(() => {
+    if (progress >= 100) {
+      setShowConfetti(true)
+    }
+  }, [progress]) // triggered when the value of 'progress' changes
+
+  return <div></div>
+}
+```
+
+#### DOM Events
+
+If your app is interactive and you want your component to react to certain events this is a good option as well. **Important:** make sure you return a cleanup function at the end of the callback. Without this, a new event listener gets added every time the effect re-runs, or worse it keeps firing after the component is gone. 😬
+
+```js
+function MusicPlayer() {
+  useEffect(() => {
+    const handler = e => {
+      // 'e' is a DOM event
+      if (e.altKey === true && e.key.toLowerCase() === "p") {
+        setIsSongPlaying(true)
+      }
+    }
+
+    document.addEventListener("keydown", handler)
+
+    // 🧹 Use a cleanup function to clear the event listener.
+    return () => document.removeEventListener("keydown", handler)
+  }, [])
+
+  return <div></div>
+}
+```
+
+Hope you found this helpful. I'd also love to hear any feedback you have or other tips and tricks of how you've used the **useEffect** hook in your projects. Thanks for reading!

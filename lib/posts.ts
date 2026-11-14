@@ -7,6 +7,7 @@ export type Frontmatter = {
     title: string;
     date: string;
     description?: string;
+    featured: boolean;
 };
 
 export function getAllSlugs(): string[] {
@@ -26,4 +27,9 @@ export async function getAllPosts() {
     return posts.sort(
         (a, b) => new Date(b.frontmatter.date).getTime() - new Date(a.frontmatter.date).getTime()
     );
+}
+
+export async function getFeaturedPosts() {
+    const allPosts = await getAllPosts();
+    return allPosts.filter(post => post.frontmatter.featured === true);
 }
