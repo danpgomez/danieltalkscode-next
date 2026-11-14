@@ -31,5 +31,5 @@ export async function getAllPosts() {
 
 export async function getFeaturedPosts() {
     const allPosts = await getAllPosts();
-    return allPosts.filter(post => post.frontmatter.featured === true);
+    return allPosts.filter(post => post.frontmatter.featured);
 }

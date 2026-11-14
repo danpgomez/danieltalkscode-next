@@ -1,9 +1,11 @@
 import styles from "./page.module.css";
 import { getFeaturedPosts } from "@/lib/posts";
+import { getFeaturedProjects } from "@/lib/projects";
 import Link from "next/link";
 
 export default async function Home() {
   const featuredBlogPosts = await getFeaturedPosts();
+  const featuredProjects = await getFeaturedProjects();
 
   return (
     <main className={styles.main}>
@@ -16,6 +18,13 @@ export default async function Home() {
 
       <section id="projects">
         <h2>Projects</h2>
+        <ul>
+          {featuredProjects.map(({ slug, frontmatter }) => (
+            <li key={slug}>
+              <Link href={`/projects/${slug}`}>{frontmatter.title}</Link>
+            </li>
+          ))}
+        </ul>
       </section>
 
       <section id="featured-blog-posts">
