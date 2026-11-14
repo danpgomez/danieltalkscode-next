@@ -1,0 +1,13 @@
+.field input:user-invalid,
+.field textarea:user-invalid {
+    border-color: crimson;
+}
+
+.error {
+    color: crimson;
+}
+
+.honeypot {
+    position: absolute;
+    left: -9999px;
+}
