@@ -12,10 +12,25 @@ function ContactForm() {
 
     // Each token works exactly once, so fetch a fresh one after every submission
     useEffect(() => {
-        if (state.status !== "idle") {
+        if (state.status !== "error") {
             turnstileRef.current?.reset();
         }
     }, [state]);
+
+    const thanksRef = useRef<HTMLParagraphElement>(null);
+    useEffect(() => {
+        if (state.status === "success") {
+            thanksRef.current?.focus();
+        }
+    }, [state.status]);
+
+    if (state.status === "success") {
+        return (
+            <p ref={thanksRef} tabIndex={-1}>
+                {state.message}
+            </p>
+        );
+    }
 
     return (
         <form action={formAction} className={styles.form}>
