@@ -78,6 +78,7 @@ export async function sendMessage(
     });
 
     if (error) {
+        console.error("Resend failed: ", error);
         return {
             status: "error",
             message: "Something went wrong sending your message. Please try again, or email me directly.",
