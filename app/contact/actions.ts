@@ -13,6 +13,22 @@ function requireEnvVariable(name: string) {
     return value;
 }
 
+async function verifyTurnstile(token: string): Promise<boolean> {
+    const secret = requireEnvVariable("TURNSTILE_SECRET_KEY");
+
+    try {
+        const response = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
+            method: "POST",
+            body: new URLSearchParams({ secret, response: token }),
+        });
+
+        const result = (await response.json()) as { success: boolean };
+        return result.success === true; 
+    } catch {
+        return false;
+    }
+}
+
 const resend = new Resend(requireEnvVariable("RESEND_API_KEY"));
 
 export async function sendMessage(
@@ -42,10 +58,20 @@ export async function sendMessage(
         };
     }
 
+    const token = formData.get("cf-turnstile-response");
+    if (typeof token !== "string" || !(await verifyTurnstile(token))) {
+        return {
+            status: "error",
+            message: "We couldn't verify you're human. Please try again.",
+            errors: {},
+            values
+        };
+    }
+
     const { name, email, message } = parsed.data;
     const { error } = await resend.emails.send({
-        from: requireEnvVariable("CONTACT_FROM_EMAIL!"),
-        to: requireEnvVariable("CONTACT_TO_EMAIL!"),
+        from: requireEnvVariable("CONTACT_FROM_EMAIL"),
+        to: requireEnvVariable("CONTACT_TO_EMAIL"),
         replyTo: email, // Send replies to the email they provide
         subject: "New message from your portfolio", // Fixed message on purpose
         text: `Name: ${name}\nEmail: ${email}\n\n${message}`,

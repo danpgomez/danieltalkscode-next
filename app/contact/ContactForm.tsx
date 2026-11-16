@@ -1,12 +1,21 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useEffect, useRef } from "react";
 import { sendMessage } from "./actions";
 import { initialState } from "./schema";
+import { Turnstile, type TurnstileInstance } from "@marsidev/react-turnstile";
 import styles from "./ContactForm.module.css";
 
-export function ContactForm() {
+function ContactForm() {
     const [state, formAction, pending] = useActionState(sendMessage, initialState);
+    const turnstileRef = useRef<TurnstileInstance>(null);
+
+    // Each token works exactly once, so fetch a fresh one after every submission
+    useEffect(() => {
+        if (state.status !== "idle") {
+            turnstileRef.current?.reset();
+        }
+    }, [state]);
 
     return (
         <form action={formAction} className={styles.form}>
@@ -60,6 +69,11 @@ export function ContactForm() {
                 <input id="website" name="website" tabIndex={-1} autoComplete="off" />
             </div>
 
+            <Turnstile 
+                ref={turnstileRef}
+                siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY!}
+            />
+
             <button type="submit" disabled={pending}>
                 {pending ? "Sending..." : "Send message"}
             </button>
@@ -69,3 +83,5 @@ export function ContactForm() {
         </form>
     );
 }
+
+export default ContactForm;
