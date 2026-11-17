@@ -4,7 +4,7 @@ import { getAllPosts } from "@/lib/posts";
 export default async function BlogIndex() {
     const posts = await getAllPosts();
     return (
-        <main>
+        <>
             <h1>Blog</h1>
             <ul>
                 {posts.map(({ slug, frontmatter }) => (
@@ -14,6 +14,6 @@ export default async function BlogIndex() {
                     </li>
                 ))}
             </ul>
-        </main>
+        </>
     );
 }

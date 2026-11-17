@@ -19,7 +19,7 @@ export default async function PostPage({ params }: Props) {
     const { slug } = await params;
     const { Content, frontmatter } = await getPost(slug);
     return (
-        <article>
+        <article className="prose lg:prose-xl max-w-none">
             <h1>{frontmatter.title}</h1>
             <time dateTime={frontmatter.date}>
                 {new Date(frontmatter.date).toLocaleDateString("en-US", { dateStyle: "long" })}

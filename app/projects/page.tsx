@@ -4,7 +4,7 @@ import { getAllProjects } from "@/lib/projects";
 export default async function ProjectIndex() {
     const projects = await getAllProjects();
     return (
-        <main>
+        <>
             <h1>Projects</h1>
             <ul>
                 {projects.map(({ slug, frontmatter }) => (
@@ -14,6 +14,6 @@ export default async function ProjectIndex() {
                     </li>
                 ))}
             </ul>
-        </main>
+        </>
     );
 }

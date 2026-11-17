@@ -29,8 +29,10 @@ export default async function ProjectPage({ params }: Props) {
                 ))}
             </ul>
 
-            {frontmatter.liveUrl && <a href={frontmatter.liveUrl}>View live site</a>}
-            {frontmatter.repoUrl && <a href={frontmatter.repoUrl}>View source code</a>}
+            <div className="flex gap-3">
+                {frontmatter.liveUrl && <a href={frontmatter.liveUrl}>View live site</a>}
+                {frontmatter.repoUrl && <a href={frontmatter.repoUrl}>View source code</a>}
+            </div>
             <Content />
         </article>
     );
