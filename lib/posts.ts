@@ -8,6 +8,7 @@ export type Frontmatter = {
     date: string;
     description?: string;
     featured: boolean;
+    featuredImage?: { src: string, alt: string }
 };
 
 export function getAllSlugs(): string[] {
@@ -19,7 +20,22 @@ export function getAllSlugs(): string[] {
 
 export async function getPost(slug: string) {
     const mod = await import(`@/content/blog/${slug}/index.mdx`);
-    return { slug, Content: mod.default, frontmatter: mod.frontmatter as Frontmatter };
+    const frontmatter = mod.frontmatter as Frontmatter;
+    const { featuredImage } = frontmatter;
+
+    return {
+        slug,
+        Content: mod.default,
+        frontmatter: {
+            ...frontmatter,
+            featuredImage: featuredImage && {
+                ...featuredImage,
+                src: featuredImage.src.startsWith("./")
+                ? `/blog/${slug}/${featuredImage.src.slice(2)}`
+                : featuredImage.src,
+            },
+        } satisfies Frontmatter
+    };
 }
 
 export async function getAllPosts() {

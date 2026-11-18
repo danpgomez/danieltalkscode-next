@@ -3,6 +3,8 @@ import { getFeaturedProjects } from "@/lib/projects";
 import Link from "next/link";
 import Image from "next/image";
 import bio from "./daniel-about-me.webp";
+import ProjectCard from "@/components/ProjectCard";
+import BlogPostCard from "@/components/BlogPostCard";
 
 export default async function Home() {
   const featuredBlogPosts = await getFeaturedPosts();
@@ -34,23 +36,15 @@ export default async function Home() {
         <h2>Featured Projects</h2>
         <ul className="not-prose grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {featuredProjects.map(({ slug, frontmatter }) => (
-            
-            <li key={slug}> 
-              <Link 
-              href={`/projects/${slug}`}
-              className="block h-full rounded-xl bg-gray-300 p-3 hover:bg-gray-400 focus-visible:outline-2 focus-visible:outline-offset-2"
-              >
-                <p className="mb-2 font-semibold">{frontmatter.title}</p>
-                
-                <Image 
-                  src={frontmatter.thumbnail} 
-                  width={400} 
-                  height={300}
-                  alt="" // The scr reader will read the Link's frontmatter.title which is enough.
-                  className="aspect-4/3 w-full rounded-lg object-cover object-top"
-                />
-              </Link>
-            </li>
+
+          <ProjectCard 
+            key={slug}
+            slug={slug}
+            title={frontmatter.title}
+            description={frontmatter.description}
+            thumbnail={frontmatter.thumbnail}
+          />
+
           ))}
         </ul>
       </section>
@@ -59,13 +53,14 @@ export default async function Home() {
         <h2>Featured Blog Posts</h2>
         <ul className="not-prose space-y-8">
           {featuredBlogPosts.map(({ slug, frontmatter }) => (
-            <li key={slug}>
-              <Link 
-               href={`/blog/${slug}`}
-               className="text-xl font-semibold hover:underline"
-              >{frontmatter.title}</Link>
-              <p className="mt-1 text-gray-600">{frontmatter.description}</p>
-            </li>
+            <BlogPostCard 
+              key={slug}
+              slug={slug}
+              date={frontmatter.date}
+              title={frontmatter.title}
+              description={frontmatter.description}
+              featuredImage={frontmatter.featuredImage}
+            />
           ))}
         </ul>
       </section>

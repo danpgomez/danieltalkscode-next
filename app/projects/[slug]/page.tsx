@@ -23,15 +23,29 @@ export default async function ProjectPage({ params }: Props) {
             <h1>{frontmatter.title}</h1>
             <p>{frontmatter.description}</p>
             
-            <ul aria-label="Technologies used">
+            <ul aria-label="Technologies used" className="not-prose my-6 flex flex-wrap gap-2">
                 {frontmatter.tech.map((techCategory) => (
-                    <li key={techCategory}>{techCategory}</li>
+                    <li key={techCategory} className="rounded-full bg-gray-200 px-3 py-1 text-sm">{techCategory}</li>
                 ))}
             </ul>
 
-            <div className="flex gap-3">
-                {frontmatter.liveUrl && <a href={frontmatter.liveUrl}>View live site</a>}
-                {frontmatter.repoUrl && <a href={frontmatter.repoUrl}>View source code</a>}
+            <div className="not-prose my-6 flex flex-wrap gap-3">
+                {frontmatter.liveUrl && (
+                    <a 
+                        href={frontmatter.liveUrl}
+                        className="rounded-lg bg-gray-900 px-4 py-2 font-medium text-white hover:bg-gray-700 focus-visible:outline-2 focus-visible:outline-offset-2"
+                    >
+                        View live site
+                    </a>
+                )}
+                {frontmatter.repoUrl && (
+                    <a 
+                        href={frontmatter.repoUrl}
+                        className="rounded-lg bg-gray-900 px-4 py-2 font-medium text-white hover:bg-gray-700 focus-visible:outline-2 focus-visible:outline-offset-2"
+                    >
+                        View source code
+                    </a>
+                )}
             </div>
             <Content />
         </article>

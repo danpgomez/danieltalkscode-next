@@ -1,17 +1,21 @@
-import Link from "next/link";
 import { getAllProjects } from "@/lib/projects";
+import ProjectCard from "@/components/ProjectCard";
 
 export default async function ProjectIndex() {
     const projects = await getAllProjects();
     return (
         <>
             <h1>Projects</h1>
-            <ul>
+            <ul className="list-none">
                 {projects.map(({ slug, frontmatter }) => (
-                    <li key={slug}>
-                        <Link href={`/projects/${slug}`}>{frontmatter.title}</Link>
-                        <p>{frontmatter.description}</p>
-                    </li>
+                    <ProjectCard 
+                        key={slug}
+                        as="h2"
+                        slug={slug}
+                        title={frontmatter.title}
+                        description={frontmatter.description}
+                        thumbnail={frontmatter.thumbnail}
+                    />
                 ))}
             </ul>
         </>

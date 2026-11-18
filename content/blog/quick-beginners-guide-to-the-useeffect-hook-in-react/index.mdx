@@ -20,10 +20,10 @@ This is probably one of the more common uses: you want to run some asynchronous 
 ```js
 function ProductGrid() {
   useEffect(() => {
-    getData()
-  }, []) // the '[]' makes this run once on-mount (when component first renders)
+    getData();
+  }, []); // the '[]' makes this run once on-mount (when component first renders)
 
-  return <div></div>
+  return <div></div>;
 }
 ```
 
@@ -40,11 +40,11 @@ and 'setShowConfetti' from 'useState' in the parent.
 function ProgressTracker() {
   useEffect(() => {
     if (progress >= 100) {
-      setShowConfetti(true)
+      setShowConfetti(true);
     }
-  }, [progress]) // triggered when the value of 'progress' changes
+  }, [progress]); // triggered when the value of 'progress' changes
 
-  return <div></div>
+  return <div></div>;
 }
 ```
 
@@ -55,20 +55,20 @@ If your app is interactive and you want your component to react to certain event
 ```js
 function MusicPlayer() {
   useEffect(() => {
-    const handler = e => {
+    const handler = (e) => {
       // 'e' is a DOM event
       if (e.altKey === true && e.key.toLowerCase() === "p") {
-        setIsSongPlaying(true)
+        setIsSongPlaying(true);
       }
-    }
+    };
 
-    document.addEventListener("keydown", handler)
+    document.addEventListener("keydown", handler);
 
     // 🧹 Use a cleanup function to clear the event listener.
-    return () => document.removeEventListener("keydown", handler)
-  }, [])
+    return () => document.removeEventListener("keydown", handler);
+  }, []);
 
-  return <div></div>
+  return <div></div>;
 }
 ```
 
